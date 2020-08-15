@@ -19,6 +19,7 @@
                     </section>
                 </div>
             </div>
+            <div @click="exportExcel()">daochu</div>
             <div style="height:80px;"></div>
             <el-card class="box-card footer_jisuan_div">
                 <div style="float:left">
@@ -206,7 +207,8 @@ export default {
                         color:"#fff",
                     }
                 ]
-            }
+            },
+            imgList:[]
         }
     },
     methods:{
@@ -217,7 +219,27 @@ export default {
                 all_value += this.data_val[item].value;
             }
             return '￥'+all_value;
-        }
+        },
+        // 导出表格
+        exportExcel() {
+            require.ensure([], () => {
+                const { export_json_to_excel } = require("../vendor/Export2Excel");
+
+                const tHeader = ["序号", "日期", "图片地址"];// 上面设置Excel的表格第一行的标题
+            
+                const filterVal = ["id", "time", "img"]; // 上面的index、nickName、name是tableData里对象的属性
+                
+                const list = this.imgList;              //把data里的tableData存到list
+
+                const data = this.formatJson(filterVal, list);
+                
+                export_json_to_excel(tHeader, data, "列表excel");   //标题，数据，文件名
+            });
+        },
+
+        formatJson(filterVal, jsonData) {
+            return jsonData.map(v => filterVal.map(j => v[j]));
+        },
     },
     created(){
     },
