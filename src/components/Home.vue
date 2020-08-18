@@ -1,11 +1,85 @@
 <template>
     <div>
-        <div style="width:1280px;margin:0 auto;">
-            <el-carousel :interval="4000" type="" height="400px">
-                <el-carousel-item v-for="item in top_img" :key="item">
-                    <img :src="item" alt="">
-                </el-carousel-item>
-            </el-carousel>
+        <div class="big_title_out">{{big_title}}</div>
+        <div style="width:960px;margin:0 auto;">
+             <div class="big_class_div" style="display:flex;">
+                <div style="width:560px;">
+                    <section class="el-container">
+                        <aside class="el-aside line_height_60" style="width: 120px;">报价类型</aside> 
+                        <main class="el-main" style="text-align:left;">
+                            <el-radio-group v-model="data_val['baojia_type']">
+                                <el-radio-button label="chanping" class="">产品</el-radio-button>
+                            </el-radio-group>
+                             <el-radio-group v-model="data_val['baojia_type']">
+                                <el-radio-button label="muju" class="">模具</el-radio-button>
+                            </el-radio-group>
+                             <el-radio-group v-model="data_val['baojia_type']">
+                                <el-radio-button label="jiagong" class="">加工</el-radio-button>
+                            </el-radio-group>
+                        </main>
+                    </section>
+                    <section class="el-container">
+                        <aside class="el-aside line_height_60" style="width: 120px;">产品应用</aside> 
+                        <main class="el-main" style="text-align:left;">
+                            <el-radio-group v-model="data_val['chanping_use']">
+                                <el-radio-button label="jiadian" class="">家电</el-radio-button>
+                            </el-radio-group>
+                            <el-radio-group v-model="data_val['baojia_type']">
+                                <el-radio-button label="shuma" class="">数码</el-radio-button>
+                            </el-radio-group>
+                            <el-radio-group v-model="data_val['baojia_type']">
+                                <el-radio-button label="gongyegongju" class="">工业工具</el-radio-button>
+                            </el-radio-group>
+                            <el-radio-group v-model="data_val['baojia_type']">
+                                <el-radio-button label="qita" class="">其他</el-radio-button>
+                            </el-radio-group>
+                        </main>
+                    </section>
+                    <section class="el-container">
+                        <aside class="el-aside line_height_60" style="width: 120px;">产品名称</aside> 
+                        <main class="el-main" style="text-align:left;">
+                            <el-input placeholder="请输入产品名称" v-model="data_val['chanping_name']" clearable></el-input>
+                        </main>
+                    </section>
+                    <section class="el-container">
+                        <aside class="el-aside line_height_60" style="width: 120px;">开模要求</aside> 
+                        <main class="el-main" style="text-align:left;">
+                            <el-row>
+                                <el-col :span="16">
+                                    <div class="grid-content bg-purple">
+                                        <el-radio-group v-model="data_val['kaimo_yaoqiu']">
+                                            <el-radio-button label="danchu" class="">单出</el-radio-button>
+                                        </el-radio-group>
+                                        <el-radio-group v-model="data_val['kaimo_yaoqiu']">
+                                            <el-radio-button label="gongmo" class="">共模</el-radio-button>
+                                        </el-radio-group>
+                                        <el-radio-group v-model="data_val['kaimo_yaoqiu']">
+                                            <el-radio-button label="duoxiancheng" class="">多工程</el-radio-button>
+                                        </el-radio-group>
+                                    </div>
+                                </el-col>
+                                <el-col :span="8">
+                                    <div class="grid-content bg-purple-light">
+                                         <section class="el-container">
+                                            <aside class="el-aside " style="width: 40px;line-height:40px;">套数</aside> 
+                                            <main class="el-main" style="text-align:left;padding-top:0;">
+                                                <el-input placeholder="套数" v-model="data_val['kaimo_yaoqiu_num']"></el-input>
+                                            </main>
+                                        </section>
+                                    </div>
+                                </el-col>
+                            </el-row>
+                        </main>
+                    </section>
+                </div>
+                <div style="width:400px;display:inline-blick">
+                    <el-carousel :interval="4000" type="" height="250px">
+                        <el-carousel-item v-for="item in top_img" :key="item">
+                            <img :src="item" alt="">
+                        </el-carousel-item>
+                    </el-carousel>
+                </div>
+            </div>
             <div class="content_div">
                 <div class="big_class_div" v-for="(item,key) in json_data" :key="key">
                     <div class="big_title">{{item.big_class_name}}</div>
@@ -19,7 +93,7 @@
                     </section>
                 </div>
             </div>
-            <div @click="exportExcel()">daochu</div>
+            <!-- <div @click="exportExcel()">daochu</div> -->
             <div style="height:80px;"></div>
             <el-card class="box-card footer_jisuan_div">
                 <div style="float:left">
@@ -37,6 +111,8 @@
 export default {
     data() {
         return {
+            // 大标题
+            big_title:'报格计算器',
             // 客户名称：
             user_name:'',
             // 产品名称:
@@ -52,7 +128,100 @@ export default {
                 'https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1597171113840&di=60a4d7210a6670ada53adbb91f9c0263&imgtype=0&src=http%3A%2F%2Fpic1.win4000.com%2Fwallpaper%2Fd%2F580f270356187.jpg',
                 'https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1597171128551&di=79bfee360e80124ed9eb633947f9d57f&imgtype=0&src=http%3A%2F%2Fattach.bbs.miui.com%2Fforum%2F201110%2F07%2F082726lghakmgjmgnah9aa.jpg'
             ],
-            data_val:{},
+            data_val:{
+                kaimo_yaoqiu_num:1
+            },
+            top_data:[
+                {
+                    //  选项的标题名字
+                    title:'报价类型',
+                    // 存储值得名字
+                    cunchu_name:'baojia_type',
+                    // 选择项
+                    choose_item:[
+                        {
+                            // 选项名字
+                            item_name:'产品',
+                            // 价格
+                            value:1.1,
+                            // 数学运算符
+                            math_fh:'*',
+                        },{
+                            // 选项名字
+                            item_name:'模具',
+                            value:1.5,
+                            math_fh:'*',
+                        },{
+                            // 选项名字
+                            item_name:'加工',
+                            value:1.2,
+                            math_fh:'*'
+                        }
+                    ],
+                },{
+                    //  选项的标题名字
+                    title:'产品应用',
+                    // 存储值得名字
+                    cunchu_name:'chanping_use',
+                    // 选择项
+                    choose_item:[
+                        {
+                            // 选项名字
+                            item_name:'家电',
+                            // 价格
+                            value:100,
+                            // 数学运算符
+                            math_fh:'+'
+                        },{
+                            // 选项名字
+                            item_name:'数码',
+                            value:120,
+                            math_fh:'+'
+                        },{
+                            // 选项名字
+                            item_name:'工业工具',
+                            value:46,
+                            math_fh:'+'
+                        },{
+                            // 选项名字
+                            item_name:'其他',
+                            value:46,
+                            math_fh:'+'
+                        }
+                    ],
+                },{
+                    //  选项的标题名字
+                    title:'产品名称',
+                    // 存储值得名字
+                    cunchu_name:'chanping_name',
+                    // 选择项
+                    choose_item:[
+                        {
+                            // 选项名字
+                            item_name:'家电',
+                            // 价格
+                            value:100,
+                            // 数学运算符
+                            math_fh:'+'
+                        },{
+                            // 选项名字
+                            item_name:'数码',
+                            value:120,
+                            math_fh:'+'
+                        },{
+                            // 选项名字
+                            item_name:'工业工具',
+                            value:46,
+                            math_fh:'+'
+                        },{
+                            // 选项名字
+                            item_name:'其他',
+                            value:46,
+                            math_fh:'+'
+                        }
+                    ],
+                },
+            ],
             json_data:[
                 {
                     // 大的分类 代表区域块
@@ -212,7 +381,7 @@ export default {
         }
     },
     methods:{
-        jisuan_all_price(){
+        jisuan_all_price(){return '￥0';
             // console.log(this.data_val);
             let all_value = 0;
             for (let item in this.data_val){
@@ -245,6 +414,7 @@ export default {
     },
     mounted(){
         let data_val = {};
+        data_val.kaimo_yaoqiu_num=1;
         for (let i =0;i<this.json_data.length;i++){
             let json_data_item = this.json_data[i];
             for(let j = 0;j<json_data_item.specific_choose.length;j++){
@@ -276,7 +446,7 @@ export default {
         position: fixed;
         z-index: 999;
         bottom: 0;
-        width: 1280px;
+        width: 960px;
         height: 80px;
     }
     .last_moneny{font-size: 20px;color: #c7000d;}
@@ -284,7 +454,7 @@ export default {
         border-left:1px solid #DCDFE6;
     }
     .choose_btn{
-        margin: 0 10px;
+        margin: 5px 10px;
     }
     .big_title{
         font-size: 18px;
@@ -303,4 +473,14 @@ export default {
     .my_bottom_btn:hover{
         box-shadow: 5px 5px 5px rgba(0, 0, 0, 0.3) !important;
     }
+    .big_title_out{
+        font-size: 20px;
+        text-align: center;
+        font-weight: 700;
+        margin-bottom: 10px;
+    }
+    .height_60{height: 60px;}
+    .line_height_60{line-height: 60px;}
+    .padding_10{padding: 10px;}
+    .el-main{padding: 10px;}
 </style>
