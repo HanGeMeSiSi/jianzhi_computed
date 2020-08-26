@@ -90,7 +90,7 @@
                                 <span>产品单重(G)</span>
                                 <el-input type="text" v-model="data_val[n-1]['chanping_danzhong']"  style="width:80px;"/>
                                 <span>模出数</span>
-                                <el-input class="input_ele_number" type="number" v-model="data_val[n-1]['muchu_shu']"  style="width:80px;"/>
+                                <el-input class="input_ele_number" type="number" v-model="data_val[n-1]['muchu_shu']" @input="muren_price_jisuan(n-1)" style="width:80px;"/>
                                 <span>水口重</span>
                                 <el-input type="" v-model="data_val[n-1]['shuikou_zhong']"  style="width:80px;"/>
                             </div>
@@ -139,6 +139,10 @@
                                 <el-radio-group v-model="data_val[n-1]['muju_shouming']">
                                     <el-radio-button label="1.1" class="">100万以上</el-radio-button>
                                 </el-radio-group>
+                                 <div style="display:inline-block;float:right;">
+                                    <span>模具参考报价</span>
+                                    <el-input type="text" class="input_dis_ele_color_000" v-model="data_val[n-1]['muju_cankao_price']" placeholder="" disabled="disabled" style="width:100px;"/>
+                                </div>
                             </main>
                         </section>
                         <section class="el-container">
@@ -147,15 +151,15 @@
                                 <el-input type="text" v-model="data_val[n-1]['chanping_chicun']"  style="width:120px;"/>
                                 <div style="display:inline-block;margin-left:50px;font-size:0;">
                                     <span style="font-size:16px;">模架尺寸</span>
-                                    <el-input style="font-size:14px;width:100px;margin:0 5px 0 15px;" placeholder="L" type="number" class="input_ele_number" v-model="data_val[n-1]['mujia_chicun_one']"></el-input>
+                                    <el-input style="font-size:14px;width:100px;margin:0 5px 0 15px;" placeholder="L" type="number" class="input_ele_number" v-model="data_val[n-1]['mujia_chicun_one']" @input="mujia_price_jisuan(n-1)"></el-input>
                                     <span style="font-size:14px;">X</span>
-                                    <el-input style="font-size:14px;width:100px;margin:0 5px;" placeholder="W" type="number" class="input_ele_number" v-model="data_val[n-1]['mujia_chicun_two']"></el-input>
+                                    <el-input style="font-size:14px;width:100px;margin:0 5px;" placeholder="W" type="number" class="input_ele_number" v-model="data_val[n-1]['mujia_chicun_two']" @input="mujia_price_jisuan(n-1)"></el-input>
                                     <span style="font-size:14px;">X</span>
-                                    <el-input style="font-size:14px;width:100px;margin:0 5px;" placeholder="H" type="number" class="input_ele_number" v-model="data_val[n-1]['mujia_chicun_three']"></el-input>
+                                    <el-input style="font-size:14px;width:100px;margin:0 5px;" placeholder="H" type="number" class="input_ele_number" v-model="data_val[n-1]['mujia_chicun_three']" @input="mujia_price_jisuan(n-1)"></el-input>
                                 </div>
                                 <div style="display:inline-block;float:right;">
                                     <span>模架费用</span>
-                                    <el-input type="text" v-model="data_val[n-1]['mujia_price']" placeholder="" disabled="disabled" style="width:100px;"/>
+                                    <el-input type="text" class="input_dis_ele_color_000" v-model="data_val[n-1]['mujia_price']" placeholder="" disabled="disabled" style="width:100px;"/>
                                 </div>
                             </main>
                         </section>
@@ -170,7 +174,7 @@
                                 </el-radio-group>
                                 <div style="display:inline-block;float:right;">
                                     <span>试模费用</span>
-                                    <el-input type="text" v-model="data_val[n-1]['shimu_price']" placeholder="" disabled="disabled" style="width:100px;"/>
+                                    <el-input type="text" class="input_dis_ele_color_000" v-model="data_val[n-1]['shimu_price']" placeholder="" disabled="disabled" style="width:100px;color:#000;"/>
                                 </div>
                             </main>
                         </section>
@@ -178,24 +182,24 @@
                             <aside class="el-aside line_height_60" style="width: 100px;">模仁材质</aside>
                             <main class="el-main" style="text-align:left;">
                                 <div style="display:inline-block;">
-                                    <el-radio-group v-model="data_val[n-1]['muren_caizhi']">
+                                    <el-radio-group @change="muren_price_jisuan(n-1,2)" v-model="data_val[n-1]['muren_caizhi']">
                                         <el-radio-button label="30" class="">预硬钢</el-radio-button>
                                     </el-radio-group>
-                                    <el-radio-group v-model="data_val[n-1]['muren_caizhi']">
+                                    <el-radio-group @change="muren_price_jisuan(n-1,2)" v-model="data_val[n-1]['muren_caizhi']">
                                         <el-radio-button label="50" class="">淬火钢</el-radio-button>
                                     </el-radio-group>
                                 </div>
                                 <div style="display:inline-block;font-size:0;margin-left:18px;">
                                     <span style="font-size:16px;">模仁尺寸</span>
-                                    <el-input style="font-size:14px;width:100px;margin:0 5px 0 15px;" placeholder="L" type="number" class="input_ele_number" v-model="data_val[n-1]['muren_chicun_one']"></el-input>
+                                    <el-input style="font-size:14px;width:100px;margin:0 5px 0 15px;" placeholder="L" type="number" class="input_ele_number" v-model="data_val[n-1]['muren_chicun_one']" @input="muren_price_jisuan(n-1)"></el-input>
                                     <span style="font-size:14px;">X</span>
-                                    <el-input style="font-size:14px;width:100px;margin:0 5px;" placeholder="W" type="number" class="input_ele_number" v-model="data_val[n-1]['muren_chicun_two']"></el-input>
+                                    <el-input style="font-size:14px;width:100px;margin:0 5px;" placeholder="W" type="number" class="input_ele_number" v-model="data_val[n-1]['muren_chicun_two']" @input="muren_price_jisuan(n-1)"></el-input>
                                     <span style="font-size:14px;">X</span>
-                                    <el-input style="font-size:14px;width:100px;margin:0 5px;" placeholder="H" type="number" class="input_ele_number" v-model="data_val[n-1]['muren_chicun_three']"></el-input>
+                                    <el-input style="font-size:14px;width:100px;margin:0 5px;" placeholder="H" type="number" class="input_ele_number" v-model="data_val[n-1]['muren_chicun_three']" @input="muren_price_jisuan(n-1)"></el-input>
                                 </div>
                                 <div style="display:inline-block;float:right;">
                                     <span>模仁费用</span>
-                                    <el-input type="text" v-model="data_val[n-1]['muren_price']" placeholder="" disabled="disabled" style="width:100px;"/>
+                                    <el-input type="text" class="input_dis_ele_color_000" v-model="data_val[n-1]['muren_price']" placeholder="" disabled="disabled" style="width:100px;"/>
                                 </div>
                             </main>
                         </section>
@@ -230,7 +234,7 @@
                                 </el-radio-group>
                                 <div style="display:inline-block;float:right;">
                                     <span>材料费用</span>
-                                    <el-input type="text" v-model="data_val[n-1]['cailiao_price']" placeholder="" style="width:100px;"/>
+                                    <el-input type="text" disabled="disabled" class="input_dis_ele_color_000" v-model="data_val[n-1]['cailiao_price']" placeholder="" style="width:100px;"/>
                                 </div>
                             </main>
                         </section>
@@ -260,18 +264,15 @@
                                     元/KG
                                 </div>
                                 <div style="display:inline-block;float:right;">
-                                    <span>人工费用</span>
-                                    <el-input type="text" v-model="data_val[n-1]['rengong_price']" placeholder="" style="width:100px;"/>
+                                    <span>加工费用</span>
+                                    <el-input type="text" disabled="disabled" class="input_dis_ele_color_000" v-model="data_val[n-1]['jiagong_price']" placeholder="" style="width:100px;"/>
                                 </div>
                             </main>
                         </section>
                         <section class="el-container">
                             <aside class="el-aside line_height_60" style="width: 100px;">包装要求</aside>
                             <main class="el-main" style="text-align:left;">
-                                <!-- <el-checkbox-group v-model="data_val[n-1]['baozhuang_yaoqiu']">
-                                    <el-checkbox-button v-for="city in cities" :label="city" :key="city">{{city}}</el-checkbox-button>
-                                </el-checkbox-group> -->
-                                <!-- <el-checkbox-group v-model="data_val[n-1]['baozhuang_yaoqiu']" size="small">
+                                <el-checkbox-group  style="display:inline-block" v-model="data_val[n-1]['baozhuang_yaoqiu']" size="">
                                     <el-checkbox-button label="1" class="" key="纸箱">纸箱</el-checkbox-button>
                                     <el-checkbox-button label="2" class="" key="吸塑">吸塑</el-checkbox-button>
                                     <el-checkbox-button label="3" class="" key="印刷">印刷</el-checkbox-button>
@@ -279,10 +280,10 @@
                                     <el-checkbox-button label="5" class="" key="喷漆">喷漆</el-checkbox-button>
                                     <el-checkbox-button label="6" class="" key="组装">组装</el-checkbox-button>
                                     <el-checkbox-button label="7" class="" key="其它">其它</el-checkbox-button>
-                                </el-checkbox-group> -->
+                                </el-checkbox-group>
                                 <div style="display:inline-block;float:right;">
                                     <span>其它费用</span>
-                                    <el-input type="text" v-model="data_val[n-1]['qita_price']" placeholder="" style="width:100px;"/>
+                                    <el-input type="text" class="input_dis_ele_color_000" disabled="disabled" v-model="data_val[n-1]['qita_price']" placeholder="" style="width:100px;"/>
                                 </div>
                             </main>
                         </section>
@@ -388,6 +389,94 @@ export default {
             }
             return '￥'+all_value;
         },
+        // 计算模架费用
+        mujia_price_jisuan(index){
+            let data = this.data_val[index];
+            let one = data['mujia_chicun_one'];
+            let two = data['mujia_chicun_two'];
+            let three = data['mujia_chicun_three'];
+            if(!one || !two || !three){return}
+            let last_value = one*0.785*two*0.00001*three*10;
+            this.data_val[index]['mujia_price'] = this.baoliu_xiaoshu(last_value);
+            // return last_value
+        },
+        // 计算模仁费用
+        muren_price_jisuan(index,type=1){
+            let data = this.data_val[index];
+            let one = data['muren_chicun_one'];
+            let two = data['muren_chicun_two'];
+            let three = data['muren_chicun_three'];
+            let caizhi = data['muren_caizhi'];
+            let muchu_shu = data['muchu_shu'];
+            
+            if(type==2){
+                if(caizhi == 30){
+                    data['shimu_price']=1000;
+                }else if(caizhi ==50){
+                    data['shimu_price']=2000
+                }
+                if(!one || !two || !three || !caizhi || !muchu_shu){
+                    data['muren_price'] =0;
+                }else{
+                    let last_value = one*two*three*0.785*0.00001*caizhi*muchu_shu;
+                    data['muren_price'] = this.baoliu_xiaoshu(last_value);
+                }
+                this.$set(this.data_val,index,data)
+            }else{
+                if(!one || !two || !three || !caizhi || !muchu_shu){return}
+                let last_value = one*two*three*0.785*0.00001*caizhi*muchu_shu;
+                this.data_val[index]['muren_price'] = this.baoliu_xiaoshu(last_value);
+            }
+
+        },
+        // 模具参考报价计算
+        muju_cankao_price_jisuan(index){
+            let data = this.data_val[index];
+            let muren_price = data['muren_price'];
+            let mujia_price = data['mujia_price'];
+            let chanping_use = this.head_val['chanping_use'];
+            let muji_gongqi = this.muju_gongqi_xishu(data['muju_gongqi']);
+            let waiguan_yaoqiu = data['waiguan_yaoqiu'];
+            let muju_shouming = data['muju_shouming'];
+            let shimu_price = data['shimu_price'];
+            let jiaokou_type = data['jiaokou_type'];
+            let muchu_shu = data['muchu_shu'];
+            let reliudao_price = (jiaokou_type == 'reliudao'? 5000*muchu_shu : 0);
+            if(
+                !muren_price || 
+                !mujia_price || 
+                !chanping_use || 
+                !muji_gongqi || 
+                !waiguan_yaoqiu || 
+                !muju_shouming || 
+                !shimu_price || 
+                !jiaokou_type || 
+                !muchu_shu || 
+                !reliudao_price
+            )return
+            let last_value = ((muren_price+mujia_price)/0.25*chanping_use*muji_gongqi*waiguan_yaoqiu*muju_shouming) + shimu_price + reliudao_price;
+            console.log(last_value);
+            data['muju_cankao_price'] = this.baoliu_xiaoshu(last_value);
+            this.$set(this.data_val,index,data);
+        },
+        // 模具工期系数计算
+        muju_gongqi_xishu(num){
+            if(num<15){
+                return 1.3
+            }else if(num<=20 && num>=15){
+                return  1.25
+            }else if(num<=25 && num>=21){
+                return  1.2
+            }else if(num<=30 && num>=26){
+                return  1.1
+            }else{
+                return 1.0
+            }
+        },
+        // 保留小数点
+        baoliu_xiaoshu(last_value){
+            return Math.round(last_value*100)/100;
+        },
         // 导出表格
         exportExcel() {
             require.ensure([], () => {
@@ -410,7 +499,12 @@ export default {
         },
     },
     created(){
-        this.data_val.push({});
+        this.data_val.push({baozhuang_yaoqiu:[]});
+        setInterval(()=>{
+            for(let i =0;i<this.data_val.length;i++){
+                this.muju_cankao_price_jisuan(i)
+            }
+        },1000)
     },
     mounted(){
     },
@@ -433,7 +527,7 @@ export default {
                 if(this.kaimo_yaoqiu_num>0){
                     this.data_val=[];
                     for(let i = 0;i<this.kaimo_yaoqiu_num;i++){
-                        this.data_val.push({});
+                        this.data_val.push({baozhuang_yaoqiu:[]});
                     }
                 }
             }
@@ -495,4 +589,5 @@ export default {
 </style>
 <style lang="css">
     .input_ele_number input{padding-right: 0;}
+    .input_dis_ele_color_000.el-input.is-disabled .el-input__inner{color: #000;}
 </style>
