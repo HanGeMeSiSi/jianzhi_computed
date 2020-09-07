@@ -75,7 +75,7 @@
                 <div v-if="top_img.length>0" class="" style="display:inline-block;width:380px;">
                    <img :src="top_img" alt="" style="width:100%">
                 </div>
-                <div v-if="top_img.length<=0" class="el-upload-dragger" >
+                <div v-if="top_img.length<=0" class="el-upload-dragger">
                    <i class="el-icon-upload"></i> 
                    <div class="el-upload__text">
                         <input type="file" accept="image/*" style="display:inline-block;text-align:center" id="shangchuan_img" @change="upload_img" value="上传图片">
@@ -315,10 +315,46 @@
                     <span class="" style="font-size:14px;color:#999">（以上报价不含税，税率13%）</span>
                 </div>
                 <div style="float:right">
+                    <el-button type="primary" @click="dialogVisible = true">修改公司信息</el-button>
                     <el-button class="my_bottom_btn" type="info" v-for="(item,index) in price_computed.right_btn" :key="index" :style="'color:'+item.color+';background-color:'+item.bg_color" @click="jisuan_all_price">{{item.name}}</el-button>
                 </div>
             </el-card>
         </div>
+        <el-dialog
+            title="公司信息编辑"
+            :visible.sync="dialogVisible"
+            width="500px"
+            :before-close="handleClose">
+            <div>
+                <section class="el-container">
+                    <aside class="el-aside line_height_60" style="width: 100px;">公司名字：</aside>
+                    <main class="el-main" style="text-align:left;">
+                        <el-input v-model="gongsi_xingxi['name']"></el-input>
+                    </main>
+                </section>
+                <section class="el-container">
+                    <aside class="el-aside line_height_60" style="width: 100px;">联系人：</aside>
+                    <main class="el-main" style="text-align:left;">
+                        <el-input v-model="gongsi_xingxi['people']"></el-input>
+                    </main>
+                </section>
+                <section class="el-container">
+                    <aside class="el-aside line_height_60" style="width: 100px;">联系电话：</aside>
+                    <main class="el-main" style="text-align:left;">
+                        <el-input v-model="gongsi_xingxi['phone']"></el-input>
+                    </main>
+                </section>
+                 <section class="el-container">
+                    <aside class="el-aside line_height_60" style="width: 100px;">联系地址：</aside>
+                    <main class="el-main" style="text-align:left;">
+                        <el-input v-model="gongsi_xingxi['dizhi']"></el-input>
+                    </main>
+                </section>
+            </div>
+            <span slot="footer" class="dialog-footer">
+                <el-button type="primary" @click="dialogVisible = false">确 定</el-button>
+            </span>
+        </el-dialog>
     </div>
 </template>
 <script>
@@ -334,6 +370,10 @@ export default {
                 '组装',
                 '其它',
             ],
+            // 公司信息弹出层显示隐藏开关
+            dialogVisible:false,
+            // 公司信息
+            gongsi_xingxi:{},
             // 大标题
             big_title:'报价计算器',
             // 客户名称：
@@ -349,7 +389,7 @@ export default {
             // 开模套数
             kaimo_yaoqiu_num:1,
             //头部的选择值
-            head_val:[],
+            head_val:{},
             // 是否显示附属栏位
             isshow_lanwei:false,
             // 是否显示明细
@@ -394,6 +434,13 @@ export default {
         }
     },
     methods:{
+        handleClose(done) {
+            this.$confirm('确认关闭？')
+            .then(_ => {
+                done();
+            })
+            .catch(_ => {});
+        },
         // 打印
         doPrint() {    
             // let bdhtml=window.document.body.innerHTML;    
@@ -425,6 +472,24 @@ export default {
             console.log(e.target.files[0])
         },
         jisuan_all_price(){
+            if(
+                !this.gongsi_xingxi['name'] || 
+                this.gongsi_xingxi['name']=='' || 
+                !this.gongsi_xingxi['people'] ||
+                this.gongsi_xingxi['people']=="" || 
+                !this.gongsi_xingxi['phone'] || 
+                this.gongsi_xingxi['phone']=='' || 
+                !this.gongsi_xingxi['dizhi'] || 
+                this.gongsi_xingxi['dizhi']==''
+            ){
+                this.$alert('请先完善公司信息！','提示',{
+                    confirmButtonText: '确定',
+                    callback: ()=>{
+                        this.dialogVisible = true;
+                    }
+                });
+                return
+            }
             function xiaoyu_ten(num){
                 if(num<10){
                     return '0'+ num 
@@ -462,7 +527,16 @@ export default {
                     suiji 
 
             this.danhao = str;
-            this.doPrint()
+            
+            console.log(JSON.stringify(this.head_val))
+            console.log(JSON.stringify(this.kaimo_yaoqiu_num))
+            console.log(JSON.stringify(this.data_val))
+            console.log(JSON.stringify(this.top_img))
+            console.log(JSON.stringify(this.isshow_mingxi))
+            console.log(JSON.stringify(this.isshow_lanwei))
+            console.log(JSON.stringify(this.danhao))
+
+            // this.doPrint()
         },
         // 计算模架费用
         mujia_price_jisuan(index){
