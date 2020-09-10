@@ -75,11 +75,8 @@
                 <div v-if="top_img.length>0" class="" style="display:inline-block;width:380px;">
                    <img :src="top_img" alt="" style="width:100%">
                 </div>
-                <div v-if="top_img.length<=0" class="el-upload-dragger">
-                   <i class="el-icon-upload"></i> 
-                   <div class="el-upload__text">
-                        <input type="file" accept="image/*" style="display:inline-block;text-align:center" id="shangchuan_img" @change="upload_img" value="上传图片">
-                   </div> 
+                <div v-if="top_img.length<=0" style="display:inline-block;width:380px;">
+                    <img src="../../static/default.jpg" alt="" style="width:100%">
                 </div>
             </div>
             <div class="content_div">
@@ -335,7 +332,7 @@ export default {
                 '其它',
             ],
             // 大标题
-            big_title:'报价计算器',
+            big_title:'个性化定制',
             // 客户名称：
             user_name:'',
             // 产品名称:

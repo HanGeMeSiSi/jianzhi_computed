@@ -72,15 +72,18 @@
                         </main>
                     </section>
                 </div>
-                <div v-if="top_img.length>0" class="" style="display:inline-block;width:380px;">
-                   <img :src="top_img" alt="" style="width:100%">
+                <div>
+                    <div>
+                        <div v-if="top_img.length>0" class="" style="display:inline-block;width:380px;">
+                        <img :src="top_img" alt="" style="width:100%">
+                        </div>
+                        <div v-if="top_img.length<=0" style="width:380px;">
+                            <img src="../../static/default.jpg" alt="" style="width:100%">
+                        </div>
+                    </div>
+                    <el-button @click="click_input_upload" type="success" style="float:right;margin:10px 10px 0 0;" size="mini">上传产品图</el-button>
                 </div>
-                <div v-if="top_img.length<=0" class="el-upload-dragger">
-                   <i class="el-icon-upload"></i> 
-                   <div class="el-upload__text">
-                        <input type="file" accept="image/*" style="display:inline-block;text-align:center" id="shangchuan_img" @change="upload_img" value="上传图片">
-                   </div> 
-                </div>
+                <input type="file" accept="image/*" style="display:none;" id="shangchuan_img" @change="upload_img" value="上传图片">
             </div>
             <div class="content_div">
                 <div class="big_class_div" v-for="n in Number(kaimo_yaoqiu_num)">
@@ -375,7 +378,7 @@ export default {
             // 公司信息
             gongsi_xingxi:{},
             // 大标题
-            big_title:'报价计算器',
+            big_title:'个性化定制',
             // 客户名称：
             user_name:'',
             // 产品名称:
@@ -434,6 +437,9 @@ export default {
         }
     },
     methods:{
+        click_input_upload(e){
+            document.getElementById('shangchuan_img').click();
+        },
         handleClose(done) {
             this.$confirm('确认关闭？')
             .then(_ => {
