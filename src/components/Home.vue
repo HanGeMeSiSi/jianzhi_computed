@@ -374,7 +374,7 @@ export default {
                 '其它',
             ],
             // 公司信息弹出层显示隐藏开关
-            dialogVisible:false,
+            dialogVisible:true,
             // 公司信息
             gongsi_xingxi:{},
             // 大标题
@@ -533,15 +533,47 @@ export default {
                     suiji 
 
             this.danhao = str;
-            
-            console.log(JSON.stringify(this.head_val))
-            console.log(JSON.stringify(this.kaimo_yaoqiu_num))
-            console.log(JSON.stringify(this.data_val))
-            console.log(JSON.stringify(this.top_img))
-            console.log(JSON.stringify(this.isshow_mingxi))
-            console.log(JSON.stringify(this.isshow_lanwei))
-            console.log(JSON.stringify(this.danhao))
-
+            let data = this.$qs.stringify({
+                action:'insert',
+                info:{
+                    head_val:this.head_val,
+                    data_val:this.data_val,
+                    kaimo_yaoqiu_num:this.kaimo_yaoqiu_num,
+                    isshow_mingxi:this.isshow_mingxi,
+                    isshow_lanwei:this.isshow_lanwei,
+                    danhao:this.danhao,
+                    top_img:this.top_img || '',
+                    gongsi_name:this.gongsi_xingxi.gongsi_name,
+                    gongsi_people:this.gongsi_xingxi.gongsi_people,
+                    gongsi_phone:this.gongsi_xingxi.gongsi_phone,
+                    gongsi_dizhi:this.gongsi_xingxi.gongsi_dizhi,
+                }
+            });
+            this.$axios({
+                method:'post',
+                url:'loaclhost:2020',
+                data,
+                headers:{
+                    'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
+                }
+            }).then(res=>{
+                if(res.code==1){
+                    this.$message({
+                        showClose: true,
+                        message: res.msg,
+                        type: 'success'
+                    });
+                    this.doPrint()
+                }else{
+                    this.$message({
+                        showClose: true,
+                        message: res.msg,
+                        type: 'error'
+                    });
+                }
+            }).catch(err=>{
+                console.error(err);
+            })
             // this.doPrint()
         },
         // 计算模架费用
@@ -726,10 +758,6 @@ export default {
     mounted(){
         let shangchuan_img = document.getElementById(shangchuan_img);
         console.log(shangchuan_img);
-
-        // shangchuan_img.onchange= (e)=>{
-        //     console.log(e);
-        // }
     },
     updated(){
         let baojia_type = this.head_val.baojia_type;
