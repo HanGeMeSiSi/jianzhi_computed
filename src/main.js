@@ -4,6 +4,7 @@ import Vue from 'vue'
 import App from './App'
 import axios from 'axios'
 import qs from 'qs'
+import jquery from 'jquery'
 import router from './router'
 import ElementUI from 'element-ui';
 import 'element-ui/lib/theme-chalk/index.css';
@@ -13,6 +14,7 @@ import Export2Excel from '@/vendor/Export2Excel';
 
 Vue.prototype.$axios = axios;
 Vue.prototype.$qs = qs;
+Vue.prototype.$jq = jquery;
 Vue.config.productionTip = false
 Vue.use(ElementUI);
 

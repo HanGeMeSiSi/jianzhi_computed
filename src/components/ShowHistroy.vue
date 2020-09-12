@@ -403,38 +403,36 @@ export default {
                 return
             }
             if(id =='id'){
-                url= 'loaclhost:2020?action=select'
-                data:this.$qs.stringify({
-                    where:{
-                        id:this.id
+                this.$jq.ajax({
+                    type:'post',
+                    url:'http://58.56.132.222:22020/index.php?action=select',
+                    dataType:'json',
+                    data:{
+                        where:{
+                            id:this.id
+                        }
+                    },
+                    success:res=>{
+                        if(res.code==1){
+                            let data = res.data;
+                            this.data_val = JSON.parse(data[0].data_val);
+                            this.head_val = JSON.parse(data[0].head_val);
+                            this.isshow_lanwei = data[0].isshow_lanwei;
+                            this.isshow_mingxi = data[0].isshow_mingxi;
+                            this.kaimo_yaoqiu_num = data[0].kaimo_yaoqiu_num;
+                            this.danhao = data[0].danhao;
+                            this.top_img = data[0].top_img;
+                        }else{
+                            this.$message({
+                                showClose: true,
+                                message: res.msg,
+                                type: 'error'
+                            });
+                        }
+                    },
+                    catch:err=>{
+                        console.err(err);
                     }
-                });
-                this.$axios({
-                    method:'post',
-                    url,
-                    data,
-                    headers:{
-                        'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
-                    }
-                }).then(res=>{
-                    if(res.code==1){
-                        let data = res.data;
-                        this.data_val = data[0].data_val;
-                        this.head_val = data[0].head_val;
-                        this.isshow_lanwei = data[0].isshow_lanwei;
-                        this.isshow_mingxi = data[0].isshow_mingxi;
-                        this.kaimo_yaoqiu_num = data[0].kaimo_yaoqiu_num;
-                        this.danhao = data[0].danhao;
-                        this.top_img = data[0].top_img;
-                    }else{
-                        this.$message({
-                            showClose: true,
-                            message: res.msg,
-                            type: 'error'
-                        });
-                    }
-                }).catch(err=>{
-                    console.error(err);
                 })
                 return
             }

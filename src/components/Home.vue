@@ -533,47 +533,46 @@ export default {
                     suiji 
 
             this.danhao = str;
-            let data = this.$qs.stringify({
+            let data = {
                 info:{
-                    head_val:this.head_val,
-                    data_val:this.data_val,
+                    head_val:JSON.stringify(this.head_val),
+                    data_val:JSON.stringify(this.data_val),
                     kaimo_yaoqiu_num:this.kaimo_yaoqiu_num,
-                    isshow_mingxi:this.isshow_mingxi,
-                    isshow_lanwei:this.isshow_lanwei,
+                    isshow_mingxi:this.isshow_mingxi ? 1 : 0,
+                    isshow_lanwei:this.isshow_lanwei ? 1 : 0,
                     danhao:this.danhao,
+                    gongsi_name:this.gongsi_xingxi.name,
+                    gongsi_people:this.gongsi_xingxi.people,
+                    gongsi_phone:this.gongsi_xingxi.phone,
+                    gongsi_dizhi:this.gongsi_xingxi.dizhi,
                     top_img:this.top_img || '',
-                    gongsi_name:this.gongsi_xingxi.gongsi_name,
-                    gongsi_people:this.gongsi_xingxi.gongsi_people,
-                    gongsi_phone:this.gongsi_xingxi.gongsi_phone,
-                    gongsi_dizhi:this.gongsi_xingxi.gongsi_dizhi,
                 }
-            });
-            this.$axios({
-                method:'post',
-                url:'loaclhost:2020?action=insert',
+            };
+            this.$jq.ajax({
+                type:"post",
+                url:'http://58.56.132.222:22020/index.php?action=insert',
                 data,
-                headers:{
-                    'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
+                dataType:'json',
+                success:res=>{
+                    if(res.code==1){
+                        this.$message({
+                            showClose: true,
+                            message: res.msg,
+                            type: 'success'
+                        });
+                        this.doPrint()
+                    }else{
+                        this.$message({
+                            showClose: true,
+                            message: res.msg,
+                            type: 'error'
+                        });
+                    }
+                },
+                catch:err=>{
+                    console.error(err);
                 }
-            }).then(res=>{
-                if(res.code==1){
-                    this.$message({
-                        showClose: true,
-                        message: res.msg,
-                        type: 'success'
-                    });
-                    this.doPrint()
-                }else{
-                    this.$message({
-                        showClose: true,
-                        message: res.msg,
-                        type: 'error'
-                    });
-                }
-            }).catch(err=>{
-                console.error(err);
             })
-            // this.doPrint()
         },
         // 计算模架费用
         mujia_price_jisuan(index){

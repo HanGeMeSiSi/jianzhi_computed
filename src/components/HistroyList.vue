@@ -119,7 +119,9 @@ export default {
                 });
                 return
             }
-            this.$router.push({path:'/show_histroy',query: {id:'1'}})
+            this.$router.push({path:'/show_histroy',query: {
+                id:id
+            }})
         },
         del_data(id){
             if(!id){
@@ -130,53 +132,20 @@ export default {
                 });
                 return
             }
-            this.$axios({
-                method:'post',
-                url:'loaclhost:2020?action:del',
-                data:this.$qs.stringify({
+            this.$jq.ajax({
+                type:'post',
+                url:'http://58.56.132.222:22020/index.php/?action=del',
+                dataType:'json',
+                data:{
                     id
-                }),
-                headers:{
-                    'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
-                }
-            }).then(res=>{
-                if(res.code==1){
-                    this.$message({
-                        showClose: true,
-                        message: res.msg,
-                        type: 'success'
-                    });
-                }else{
-                    this.$message({
-                        showClose: true,
-                        message: res.msg,
-                        type: 'error'
-                    });
-                }
-            }).catch(err=>{
-                console.error(err);
-            })
-        },
-        select_data(danhao){
-            let url = '';
-            if(danhao =='danhao'){
-                url= 'loaclhost:2020?action=select'
-                data = this.$qs.stringify({
-                    where:{
-                        danhao:this.input3.trim()
-                    }
-                })
-                this.$axios({
-                    method:'post',
-                    url,
-                    data,
-                    headers:{
-                        'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
-                    }
-                }).then(res=>{
+                },
+                success:res=>{
                     if(res.code==1){
-                        let data = res.data;
-                        this.tableData = data;
+                        this.$message({
+                            showClose: true,
+                            message: res.msg,
+                            type: 'success'
+                        });
                     }else{
                         this.$message({
                             showClose: true,
@@ -184,33 +153,66 @@ export default {
                             type: 'error'
                         });
                     }
-                }).catch(err=>{
-                    console.error(err);
+                },
+                catch:err=>{
+                    console.log(err);
+                }
+            })
+        },
+        select_data(danhao){
+            let url = '';
+            if(danhao =='danhao' && this.input3.trim()){
+                url= 'http://58.56.132.222:22020/index.php/?action=select'
+                let data = {
+                    where:{
+                        danhao:this.input3.trim()
+                    }
+                }
+                this.$jq.ajax({
+                    type:'post',
+                    url,
+                    data,
+                    dataType:'json',
+                    success:res=>{
+                        if(res.code==1){
+                            let data = res.data;
+                            this.tableData = data;
+                        }else{
+                            this.$message({
+                                showClose: true,
+                                message: '查询不到内容',
+                                type: 'error'
+                            });
+                        }
+                    },
+                    catch:err=>{
+                        console.error(err);
+                    }
                 })
                 return
             }else{
-                url= 'loaclhost:2020?action=select'
+                url= 'http://58.56.132.222:22020/index.php/?action=select';
+                this.$jq.ajax({
+                    type:'post',
+                    url,
+                    dataType:'json',
+                    success:res=>{
+                        if(res.code==1){
+                            let data = res.data;
+                            this.tableData = data;
+                        }else{
+                            this.$message({
+                                showClose: true,
+                                message: '查询不到内容',
+                                type: 'error'
+                            });
+                        }
+                    },
+                    catch:err=>{
+                        console.error(err);
+                    }
+                })
             }
-            this.$axios({
-                method:'get',
-                url,
-                headers:{
-                    'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
-                }
-            }).then(res=>{
-                if(res.code==1){
-                    let data = res.data;
-                    this.tableData = data;
-                }else{
-                    this.$message({
-                        showClose: true,
-                        message: res.msg,
-                        type: 'error'
-                    });
-                }
-            }).catch(err=>{
-                console.error(err);
-            })
         },
         handleSizeChange(val) {
             console.log(`每页 ${val} 条`);
