@@ -534,7 +534,6 @@ export default {
 
             this.danhao = str;
             let data = this.$qs.stringify({
-                action:'insert',
                 info:{
                     head_val:this.head_val,
                     data_val:this.data_val,
@@ -551,7 +550,7 @@ export default {
             });
             this.$axios({
                 method:'post',
-                url:'loaclhost:2020',
+                url:'loaclhost:2020?action=insert',
                 data,
                 headers:{
                     'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'

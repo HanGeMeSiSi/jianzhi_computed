@@ -322,6 +322,7 @@
 export default {
     data() {
         return {
+            id:0,
             cities:[
                 '纸箱',
                 '吸塑',
@@ -391,6 +392,53 @@ export default {
         }
     },
     methods:{
+        select_data(id){
+            let url = '';
+            if(!this.id){
+                this.$message({
+                    showClose: true,
+                    message: 'id不存在',
+                    type: 'error'
+                });
+                return
+            }
+            if(id =='id'){
+                url= 'loaclhost:2020?action=select'
+                data:this.$qs.stringify({
+                    where:{
+                        id:this.id
+                    }
+                });
+                this.$axios({
+                    method:'post',
+                    url,
+                    data,
+                    headers:{
+                        'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
+                    }
+                }).then(res=>{
+                    if(res.code==1){
+                        let data = res.data;
+                        this.data_val = data[0].data_val;
+                        this.head_val = data[0].head_val;
+                        this.isshow_lanwei = data[0].isshow_lanwei;
+                        this.isshow_mingxi = data[0].isshow_mingxi;
+                        this.kaimo_yaoqiu_num = data[0].kaimo_yaoqiu_num;
+                        this.danhao = data[0].danhao;
+                        this.top_img = data[0].top_img;
+                    }else{
+                        this.$message({
+                            showClose: true,
+                            message: res.msg,
+                            type: 'error'
+                        });
+                    }
+                }).catch(err=>{
+                    console.error(err);
+                })
+                return
+            }
+        },
         // 打印
         doPrint() {    
             // let bdhtml=window.document.body.innerHTML;    
@@ -632,14 +680,18 @@ export default {
         },
     },
     created(){
-        this.head_val = {"baojia_type":"chanping","chanping_use":"1.0","kaimo_yaoqiu":"danchu","chanping_name":"阿萨德"};
-        this.data_val= [{"gongxu":["0.3","0.6","0.30"],"chanping_caizhi":"123","waiguan_yaoqiu":"1.05","chanping_danzhong":"12","muchu_shu":"12","shuikou_zhong":"21","muju_gongqi":"12","muju_shouming":"0.9","chanping_chicun":"12","mujia_chicun_one":"112","mujia_chicun_three":"12","jiaokou_type":"reliudao","muren_caizhi":"50","shimu_price":2000,"muren_price":23.0602,"muren_chicun_one":"12","muren_chicun_three":"34","jitai_dunwei":"40","cailiao_name":"20","cailiao_price":2556.75,"zuoye_people_num":"12","chengxing_zhouqi":"112","jiagong_price":1.0578,"baozhuang_yaoqiu":"0.05","qita_price":1.2529,"chanping_cankao_price":2559.0607,"muren_chicun_two":"12","mujia_chicun_two":"12","mujia_price":1.266,"muju_cankao_price":62100},{"gongxu":["0.4","0.3"],"chanping_caizhi":"12","chanping_danzhong":"12","muchu_shu":"12","shuikou_zhong":"2","waiguan_yaoqiu":"1.02","muju_shouming":"0.85","chanping_chicun":"21","mujia_chicun_one":"12","mujia_chicun_two":"12","mujia_chicun_three":"12","mujia_price":0.1356,"jiaokou_type":"reliudao","muren_chicun_one":"21","muren_chicun_two":"2","muren_chicun_three":"2","muren_caizhi":"50","shimu_price":2000,"muren_price":0.3956,"muju_cankao_price":62000,"jitai_dunwei":"55","chengxing_zhouqi":"21","zuoye_people_num":"2","jiagong_price":0.0613,"cailiao_name":"50","cailiao_price":6308.75,"baozhuang_yaoqiu":"0.06","qita_price":0.7037,"chanping_cankao_price":6309.515,"muju_gongqi":"213"}];
-        this.kaimo_yaoqiu_num = "2";
+        // console.log(this.$route.query.id)
+        this.id = this.$route.query.id;
+        this.select_data('id');
+        // // console.log(id);
+        // this.head_val = {"baojia_type":"chanping","chanping_use":"1.0","kaimo_yaoqiu":"danchu","chanping_name":"阿萨德"};
+        // this.data_val= [{"gongxu":["0.3","0.6","0.30"],"chanping_caizhi":"123","waiguan_yaoqiu":"1.05","chanping_danzhong":"12","muchu_shu":"12","shuikou_zhong":"21","muju_gongqi":"12","muju_shouming":"0.9","chanping_chicun":"12","mujia_chicun_one":"112","mujia_chicun_three":"12","jiaokou_type":"reliudao","muren_caizhi":"50","shimu_price":2000,"muren_price":23.0602,"muren_chicun_one":"12","muren_chicun_three":"34","jitai_dunwei":"40","cailiao_name":"20","cailiao_price":2556.75,"zuoye_people_num":"12","chengxing_zhouqi":"112","jiagong_price":1.0578,"baozhuang_yaoqiu":"0.05","qita_price":1.2529,"chanping_cankao_price":2559.0607,"muren_chicun_two":"12","mujia_chicun_two":"12","mujia_price":1.266,"muju_cankao_price":62100},{"gongxu":["0.4","0.3"],"chanping_caizhi":"12","chanping_danzhong":"12","muchu_shu":"12","shuikou_zhong":"2","waiguan_yaoqiu":"1.02","muju_shouming":"0.85","chanping_chicun":"21","mujia_chicun_one":"12","mujia_chicun_two":"12","mujia_chicun_three":"12","mujia_price":0.1356,"jiaokou_type":"reliudao","muren_chicun_one":"21","muren_chicun_two":"2","muren_chicun_three":"2","muren_caizhi":"50","shimu_price":2000,"muren_price":0.3956,"muju_cankao_price":62000,"jitai_dunwei":"55","chengxing_zhouqi":"21","zuoye_people_num":"2","jiagong_price":0.0613,"cailiao_name":"50","cailiao_price":6308.75,"baozhuang_yaoqiu":"0.06","qita_price":0.7037,"chanping_cankao_price":6309.515,"muju_gongqi":"213"}];
+        // this.kaimo_yaoqiu_num = "2";
         
-        this.isshow_mingxi = true;
-        this.isshow_lanwei = true;
-        this.danhao='WINK202009072138110420';
-        this.top_img = "";
+        // this.isshow_mingxi = true;
+        // this.isshow_lanwei = true;
+        // this.danhao='WINK202009072138110420';
+        // this.top_img = "";
     },
     mounted(){
         let shangchuan_img = document.getElementById(shangchuan_img);
