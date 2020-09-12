@@ -78,7 +78,7 @@
                         <img :src="top_img" alt="" style="width:100%">
                         </div>
                         <div v-if="top_img.length<=0" style="width:380px;">
-                            <img src="../../static/default.jpg" alt="" style="width:100%">
+                            <img src="/static/default.jpg" alt="" style="width:100%">
                         </div>
                     </div>
                     <el-button @click="click_input_upload" type="success" style="float:right;margin:10px 10px 0 0;" size="mini">上传产品图</el-button>

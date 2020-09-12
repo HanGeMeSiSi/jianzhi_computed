@@ -76,7 +76,7 @@
                    <img :src="top_img" alt="" style="width:100%">
                 </div>
                 <div v-if="top_img.length<=0" style="display:inline-block;width:380px;">
-                    <img src="../../static/default.jpg" alt="" style="width:100%">
+                    <img src="/static/default.jpg" alt="" style="width:100%">
                 </div>
             </div>
             <div class="content_div">
